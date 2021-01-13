@@ -56,6 +56,28 @@ const questions = [
 const teamMembers = [];
 let id = 1;
 
+function saveOutput(path, data) {
+  fs.writeFile(path, data, (err) => {
+    if (err) {
+      fs.mkdir(OUTPUT_DIR, (mkdirErr) => {
+        if (mkdirErr) {
+          throw mkdirErr;
+        } else {
+          fs.writeFile(path, data, (writeErr2) => {
+            if (writeErr2) {
+              throw writeErr2;
+            } else {
+              console.log('Saved successfully!');
+            }
+          });
+        }
+      });
+    } else {
+      console.log('Saved succesfully!');
+    }
+  });
+}
+
 async function main() {
   const response = await inquirer.prompt(questions);
   switch (response.role) {
@@ -76,25 +98,7 @@ async function main() {
     main();
   } else {
     const html = render(teamMembers);
-    fs.writeFile(outputPath, html, (err) => {
-      if (err) {
-        fs.mkdir(OUTPUT_DIR, (mkdirErr) => {
-          if (mkdirErr) {
-            throw mkdirErr;
-          } else {
-            fs.writeFile(outputPath, html, (writeErr2) => {
-              if (writeErr2) {
-                throw writeErr2;
-              } else {
-                console.log('Saved successfully!');
-              }
-            });
-          }
-        });
-      } else {
-        console.log('Saved succesfully!');
-      }
-    });
+    saveOutput(outputPath, html);
   }
 }
 
