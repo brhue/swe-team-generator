@@ -75,7 +75,26 @@ async function main() {
   if (response.addMember) {
     main();
   } else {
-    console.log(teamMembers);
+    const html = render(teamMembers);
+    fs.writeFile(outputPath, html, (err) => {
+      if (err) {
+        fs.mkdir(OUTPUT_DIR, (mkdirErr) => {
+          if (mkdirErr) {
+            throw mkdirErr;
+          } else {
+            fs.writeFile(outputPath, html, (writeErr2) => {
+              if (writeErr2) {
+                throw writeErr2;
+              } else {
+                console.log('Saved successfully!');
+              }
+            });
+          }
+        });
+      } else {
+        console.log('Saved succesfully!');
+      }
+    });
   }
 }
 
