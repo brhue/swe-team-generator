@@ -10,6 +10,76 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const questions = [
+  {
+    type: 'list',
+    message: "What is the team member's role?",
+    choices: ['Manager', 'Engineer', 'Intern'],
+    name: 'role',
+  },
+  {
+    type: 'input',
+    message: "What is the team member's name?",
+    name: 'name',
+  },
+  {
+    type: 'input',
+    message: "What is the team member's email?",
+    name: 'email',
+  },
+  {
+    type: 'number',
+    message: "What is their office number?",
+    name: 'officeNumber',
+    when: ({ role }) => role === 'Manager',
+  },
+  {
+    type: 'input',
+    message: 'What is their github?',
+    name: 'github',
+    when: ({ role }) => role === 'Engineer',
+  },
+  {
+    type: 'input',
+    message: 'What is their school?',
+    name: 'school',
+    when: ({ role }) => role === 'Intern',
+  },
+  {
+    type: 'confirm',
+    message: 'Add another team member?',
+    name: 'addMember',
+    default: true,
+  }
+];
+
+const teamMembers = [];
+let id = 1;
+
+async function main() {
+  const response = await inquirer.prompt(questions);
+  switch (response.role) {
+    case 'Manager':
+      teamMembers.push(new Manager(response.name, id, response.email, response.officeNumber));
+      break;
+    case 'Engineer':
+      teamMembers.push(new Engineer(response.name, id, response.email, response.github));
+      break;
+    case 'Intern':
+      teamMembers.push(new Intern(response.name, id, response.email, response.school));
+      break;
+    default:
+      throw new Error(`Unknown role: ${response.role}.`);
+  }
+  id++;
+  if (response.addMember) {
+    main();
+  } else {
+    console.log(teamMembers);
+  }
+}
+
+main();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
