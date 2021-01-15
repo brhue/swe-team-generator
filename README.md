@@ -1,7 +1,7 @@
 # Dev Team Generator
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## Description
-This is a CLI to generate an html file showcasing a development team. It uses [inquirer](https://www.npmjs.com/package/inquirer) to get user input and varies the questions asked depending on the team member role.
+This is a CLI to generate an html file showcasing a development team. It uses [inquirer](https://www.npmjs.com/package/inquirer) to get user input and varies the questions asked depending on the team member role. There's also a [demo video](./assets/demo.mov).
 
 ## Table of Contents
 * [Installation](#installation)
